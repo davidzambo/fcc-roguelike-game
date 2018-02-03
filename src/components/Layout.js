@@ -4,7 +4,7 @@ import { Header, Container, Divider, Icon } from 'semantic-ui-react';
 export default class Layout extends Component{
   render(){
     return (
-      <Container>
+      <Container fluid>
 
         <Header as="h1" textAlign="center">Roguelike Dungeon Crawler Game</Header>
         {this.props.children}

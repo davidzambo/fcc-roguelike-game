@@ -1,0 +1,72 @@
+* When the user opens the application, a description modal window tells him/her the before the game story.
+
+* After clicking the "Start the game" button, the game will start from level 1.
+
+* David has:
+  - menthal status
+    - during fighing a bug, it can decrease until 0 %
+    - by time it can increase -> for example 1% every minutes -> 100% will take 1min 40sec
+  
+  - weapon
+    - in this case David will have not exactly one weapon but a collection of skills, whiches strength will be added together.
+    Level 1:
+      HTML : 1,
+      CSS : 3,
+      Bootstrap: 5,
+      jQuery: 10,
+      Javascript: 20,
+
+    Level 2:
+      Sass : 25,
+      React : 40,
+      D3 : 30,
+
+    Level 3:
+      NodeJS: 40,
+      Express: 40,
+      Mongo: 40,
+      Git: 40,
+  
+  - level
+
+  David : {
+    menthal_status: 100,
+    level: 1,
+    devXP: 1,
+    skills: [
+      {
+        name: logic,
+        devXP: 1,
+      }
+    ]
+  }
+* Your task is to collect all the skills and kill all the bugs. 
+  You can't go to next level until you collect all the skills.
+  If you are done, a transport gate will open somewhere in the map.
+  Maybe we should indicate somehow the current maps elements.
+  
+* Bugs are getting stronger and stronger, so you have to upgrade your skills
+  Bugs will have 
+    errors -> How many attack power will you have to have to solve it
+    headache_factor -> How many damage does it cause
+
+* Bugs:
+  every menthal_damage will be 15 until you fix it
+
+  Level 1:
+    Bug-1 : errors: 2
+    Bug-2 : errors: 5
+    Bug-3 : errors: 10
+    Bug-4 : errors: 20
+    Bug-5 : errors: 40
+
+  Level 2:
+    Bug-6: 65
+    Bug-7: 105
+    Bug-8: 135
+
+  Level 3:
+    Bug-9: 175
+    Bug-10: 215
+    Bug-11: 255
+    Bug-12: 999 <- the boss

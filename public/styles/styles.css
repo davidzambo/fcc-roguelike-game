@@ -1,0 +1,28 @@
+.wall {
+    background-color: black;
+}
+
+.room {
+    background-color: gray;
+}
+
+table {
+    text-align: center;
+    margin: auto;
+    border-spacing: 0;
+    border-collapse: collapse;
+    border: 2px solid red;
+}
+
+td {
+    width: 2.5vw;
+    min-width: 30px;
+    height: 2.5vh;
+    min-height: 30px;
+    text-align: 'center';
+    vertical-align: 'middle';
+}
+
+[class^='icon']{
+  font-size: 30px;
+}
