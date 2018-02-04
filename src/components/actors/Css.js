@@ -1,9 +1,12 @@
 import React from 'react';
-
+import { Popup } from 'semantic-ui-react'
 
 const Css = () => {
   return (
-    <i className="icon-css3-alt"></i>
+    <Popup
+      trigger={<i className="icon-css3-alt"></i>}
+      content="CSS3: +3 devXP"
+    />
   );
 };
 

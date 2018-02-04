@@ -1,8 +1,12 @@
 import React from 'react';
+import { Popup } from 'semantic-ui-react'
 
 const D3 = () => {
   return (
-    <i className="icon-d3"></i>
+    <Popup
+      trigger={<i className="icon-d3"></i>}
+      content="D3: +30 devXP"
+    />
   );
 };
 

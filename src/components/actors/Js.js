@@ -1,8 +1,12 @@
 import React from 'react';
+import { Popup } from 'semantic-ui-react';
 
 const Js = () => {
   return (
-    <i className="icon-js"></i>
+    <Popup
+      trigger={<i className="icon-js"></i>}
+      content="JavaScript: +20 devXP"
+    />
   );
 };
 

@@ -1,9 +1,10 @@
+body,
 .wall {
-    background-color: black;
+    background-color: #1B1C1D;
 }
 
 .room {
-    background-color: gray;
+    background-color: #CFD0D2;
 }
 
 table {
@@ -11,18 +12,68 @@ table {
     margin: auto;
     border-spacing: 0;
     border-collapse: collapse;
-    border: 2px solid red;
 }
 
 td {
-    width: 2.5vw;
-    min-width: 30px;
-    height: 2.5vh;
-    min-height: 30px;
-    text-align: 'center';
-    vertical-align: 'middle';
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    vertical-align: middle;
 }
 
-[class^='icon']{
-  font-size: 30px;
+[class^='icon'],
+i {
+    font-size: 20px;
+    text-shadow: 1px 1px 1px black;
+    padding: 1px;
+}
+
+.icon-bootstrap {
+    color: #563D7C;
+    font-size: 18px;
+}
+
+.icon-html5 {
+    color: #E94F32;
+    font-size: 22px;
+}
+
+.icon-css3-alt {
+    color: #0074B5;
+}
+
+.icon-js {
+    color: #E5A228;
+}
+
+.icon-jquery {
+    color: #3693CB;
+}
+
+.icon-d3 {
+    color: #f79357;
+}
+
+.icon-express {
+    color: #94DA94;
+}
+
+.icon-nodejs {
+    color: #11770F;
+}
+
+.icon-git {
+    color: #F34F29;
+}
+
+.icon-mongo {
+    color: #407341;
+}
+
+.icon-react {
+    color: #55B1D1;
+}
+
+.icon-sass {
+    color: #C6538C;
 }

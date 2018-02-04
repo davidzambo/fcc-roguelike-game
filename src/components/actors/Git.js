@@ -1,8 +1,12 @@
 import React from 'react';
+import { Popup } from 'semantic-ui-react'
 
 const Git = () => {
   return (
-    <i className="icon-git"></i>
+    <Popup
+      trigger={<i className="icon-git"></i>}
+      content="Git: +40 devXP"
+    />
   );
 };
 
