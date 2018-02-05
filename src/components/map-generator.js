@@ -12,9 +12,9 @@ module.exports = {
   },
 
   createBlueprint: () => {
-    let dimensions = 25,
-      maxTunnels = 170,
-      maxLength = 8,
+    let dimensions = 30,
+      maxTunnels = 115,
+      maxLength = 10,
       map = module.exports.createArray(1, dimensions),
       currentRow = Math.floor(Math.random() * dimensions),
       currentCol = Math.floor(Math.random() * dimensions),

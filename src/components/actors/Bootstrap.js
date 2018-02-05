@@ -1,8 +1,13 @@
 import React from 'react';
+import { Popup } from 'semantic-ui-react';
+
 
 const Bootstrap = () => {
   return (
-    <i className="icon-bootstrap"></i>
+    <Popup
+      trigger={<i className="icon-bootstrap"></i>}
+      content="Bootstrap: +5 devXP"
+    />
   );
 };
 

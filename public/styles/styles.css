@@ -1,3 +1,7 @@
+body{
+  overflow: auto;
+}
+
 body,
 .wall {
     background-color: #1B1C1D;
@@ -7,25 +11,44 @@ body,
     background-color: #CFD0D2;
 }
 
-table {
+.labirinth {
     text-align: center;
     margin: auto;
-    border-spacing: 0;
-    border-collapse: collapse;
 }
 
-td {
-    width: 20px;
-    height: 20px;
+.labirinth .y-row {
+    min-width: 750px;
+    min-heigth: 750px;
+    padding: 0;
+    margin: 0;
+    display: inline-block;
+}
+
+.labirinth .y-row .x-col {
+    width: 25px;
+    height: 25px;
+    margin: auto;
     text-align: center;
     vertical-align: middle;
+    display: inline-block;
 }
 
-[class^='icon'],
 i {
-    font-size: 20px;
-    text-shadow: 1px 1px 1px black;
-    padding: 1px;
+  text-shadow: 1px 1px 1px black;
+  text-align:center;
+  margin: 0 auto;
+}
+[class^='icon'] {
+    font-size: 19px;
+    padding: 3px;
+    text-align: center;
+    margin: 0 auto;
+}
+
+#hero {
+    font-size: 15px!important;
+    padding: 3px;
+    margin-right: 3px;
 }
 
 .icon-bootstrap {
