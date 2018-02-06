@@ -1,46 +1,43 @@
-body{
-  overflow: auto;
-}
-
-body,
-.wall {
-    background-color: #1B1C1D;
-}
-
-.room {
-    background-color: #CFD0D2;
+body {
+    overflow: auto;
 }
 
 .labirinth {
+    min-width: 778px;
+    max-width: 778px;
     text-align: center;
     margin: auto;
+    background-color: #1B1C1D;
 }
 
-.labirinth .y-row {
-    min-width: 750px;
-    min-heigth: 750px;
+.y-row {
     padding: 0;
     margin: 0;
-    display: inline-block;
+    display: block;
+    line-height: 25px;
+    height: 25px;
 }
 
-.labirinth .y-row .x-col {
-    width: 25px;
-    height: 25px;
+.labirinth .x-col {
+    min-width: 25px;
+    min-height: 25px;
     margin: auto;
     text-align: center;
-    vertical-align: middle;
+    vertical-align: top;
     display: inline-block;
+    position: relative;
 }
 
 i {
-  text-shadow: 1px 1px 1px black;
-  text-align:center;
-  margin: 0 auto;
+    text-shadow: 1px 1px 1px black;
+    text-align: center;
+    margin: 0 auto;
+    background-color: rgba(255,255,255, 0.8);
+    border-radius: 2px;
 }
+
 [class^='icon'] {
     font-size: 19px;
-    padding: 3px;
     text-align: center;
     margin: 0 auto;
 }

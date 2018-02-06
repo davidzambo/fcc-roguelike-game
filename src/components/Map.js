@@ -1,7 +1,8 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import _ from 'lodash';
 import MapGenerator from './map-generator';
-import {wall, room} from './styles.css';
+import { wall, room } from './styles.css';
 import Hero from './actors/Hero';
 import Html from './actors/Html';
 import Css from './actors/Css';
@@ -15,146 +16,46 @@ import Node from './actors/Node';
 import Express from './actors/Express';
 import Mongo from './actors/Mongo';
 import Git from './actors/Git';
+import Skill from './actors/Skill';
 import Bug from './actors/Bug';
+import HeroCard from './HeroCard';
+import Row from './Row';
+import Cell from './Cell';
+import { Grid } from 'semantic-ui-react';
 
 
-export default class Map extends Component{
-  constructor(props){
+export default class Map extends Component {
+  constructor(props) {
     super(props);
-    this.handleKeyDown = this.handleKeyDown.bind(this);
-    this.move = this.move.bind(this);
-    this.state = {
-      blueprint: [],
-      level: 1,
-      hero: {
-        menthal_status: 100,
-        devXP: 1,
-        skills: [],
-        position: {
-          x: 0,
-          y: 0,
-        }
-      },
-    }
   }
-  
-  componentWillMount(){
-    // add eventlister to the document to watch for the users input
-    document.addEventListener("keydown", this.handleKeyDown, false);
-
-    // define the actors of the actual level
-    let actors = [
-          [<Html />, <Css />, <Bootstrap />, <Js />, <Jquery />, <Bug errors={1}/>, <Bug errors={3}/>, <Bug errors={5}/>, <Bug errors={10}/>, <Bug errors={20}/>, ],
-          [<Sass />, <Reactlogo />, <D3 />],
-          [<Node />, <Express />, <Mongo />, <Git />]],
-        blueprint = MapGenerator.createBlueprint(),
-        // choose an element form the non-wall places array
-        nthFreeRoom = Math.floor(Math.random() * blueprint.rooms.length),
-        // read the (x,y) coords from the blueprint
-        actorPosition = blueprint.rooms[nthFreeRoom],
-        hero = this.state.hero; // Copy the default hero object
-    hero.position = { // set the calculated position coords
-      y: actorPosition[0],
-      x: actorPosition[1]
-    }
-
-    blueprint.map[actorPosition[0]][actorPosition[1]] = <Hero />;
-    blueprint.rooms.splice(nthFreeRoom, 1);
-
-    // initialize the given level's actors
-    for (let i = 0; i < actors[(this.state.level -1)].length; i++ ){
-      nthFreeRoom = Math.floor(Math.random() * blueprint.rooms.length);
-      actorPosition = blueprint.rooms[nthFreeRoom];
-      blueprint.map[actorPosition[0]][actorPosition[1]] = actors[(this.state.level - 1)][i];
-      blueprint.rooms.splice(nthFreeRoom, 1);
-    }
-    
 
 
-    this.setState({
-      blueprint: blueprint,
-      hero: hero
+  // handleKeyDown(e) {
+  //   switch (e.keyCode) {
+  //     case 37: // left
+  //       break;
+  //     case 38: // up
+  //       break;
+  //     case 39: // right
+  //       break;
+  //     case 40: // down
+  //       break;
+  //   }
+  // }
+
+  render() {
+    const rows = this.props.blueprint.map.map((cells, index) => {
+        return <Row key={index} cells={cells}/>
     });
-  }
-
-  handleKeyDown(e) {
-    switch (e.keyCode) {
-      case 37: // left
-        this.move('left');
-        break;
-      case 38: // up
-        this.move('up'); // watch for the numbers of the rows increasing from top to bottom
-        break;
-      case 39: // right
-        this.move('right');
-        break;
-      case 40: // down
-        this.move('down');
-        break;
-    }
-  }
-
-  move(direction){
-    let blueprint = this.state.blueprint,
-        hero = this.state.hero,
-        newBlueprint = Object.assign({}, this.state.blueprint),
-        newHero = Object.assign({}, this.state.hero);
-
-    // get where would the user move
-    switch(direction){
-      case 'left':
-        if (blueprint.map[hero.position.y][hero.position.x - 1] === 0 ){
-          newBlueprint.map[hero.position.y][hero.position.x] = 0;
-          newBlueprint.map[hero.position.y][hero.position.x - 1] = <Hero />;
-          newHero.position.x--;
-        }
-      break;
-      case 'right':
-        if (blueprint.map[hero.position.y][hero.position.x + 1] === 0) {
-          newBlueprint.map[hero.position.y][hero.position.x] = 0;
-          newBlueprint.map[hero.position.y][hero.position.x + 1] = <Hero />;
-          newHero.position.x++;
-        }
-        break;
-      case 'up':
-        let content = blueprint.map[hero.position.y - 1][hero.position.x];
-        console.log(content)
-        if (typeof (content) === 'object'){
-          console.log(content.type.name)
-          newHero.skills.push(content.type.name);
-        }
-        if (content === 0) {
-          newBlueprint.map[hero.position.y][hero.position.x] = 0;
-          newBlueprint.map[hero.position.y - 1][hero.position.x] = <Hero />;
-          newHero.position.y--;
-        }
-        break;
-      case 'down':
-        if (blueprint.map[hero.position.y + 1][hero.position.x] === 0) {
-          newBlueprint.map[hero.position.y][hero.position.x] = 0;
-          newBlueprint.map[hero.position.y + 1][hero.position.x] = <Hero />;
-          newHero.position.y++;
-        }
-        break;
-    }
-    this.setState({
-      blueprint: newBlueprint,
-      hero: newHero
-    });
-  }
-
-
-  render(){
-    let map = this.state.blueprint.map.map((row, i) => {
-      return <div className="y-row" key={i}>{row.map((col, j) => {
-        return <div key={j} id={'r' + i + '_c' + j} className={(col === 1) ? 'x-col wall' : 'x-col room'}>{(typeof col === 'number') ? ' ' : col}</div>
-      })}</div>
-    });
-    
     return (
-      <div className="labirinth">
-        {map}
-      </div>
+      <Grid columns={2}>
+        <Grid.Column width={16} mobile={16} tablet={13} computer={10} className="labirinth">
+          {rows}
+        </Grid.Column>
+        <Grid.Column width={4}>
+          <HeroCard />
+        </Grid.Column>
+      </Grid>
     );
   }
 }
