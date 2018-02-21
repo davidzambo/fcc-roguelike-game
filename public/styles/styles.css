@@ -10,29 +10,31 @@ body {
     background-color: #1B1C1D;
 }
 
-.y-row {
-    padding: 0;
-    margin: 0;
-    display: block;
-    line-height: 25px;
-    height: 25px;
+table {
+    background-color: #1B1C1D;
+    border: none;
+    border-collapse: collapse;
+    margin: 25px;
+    padding: 25px;
+    outline: 25px solid #1B1C1D;
 }
 
-.labirinth .x-col {
+
+td {
     min-width: 25px;
+    max-width: 25px;
+    width: 25px;
     min-height: 25px;
-    margin: auto;
+    max-height: 25px;
+    height: 25px;
+    vertical-align: center;
     text-align: center;
-    vertical-align: top;
-    display: inline-block;
-    position: relative;
 }
 
 i {
     text-shadow: 1px 1px 1px black;
     text-align: center;
     margin: 0 auto;
-    background-color: rgba(255,255,255, 0.8);
     border-radius: 2px;
 }
 

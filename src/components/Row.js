@@ -1,29 +1,46 @@
-import React from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import Cell from './Cell';
 
-const Row = (props) => {
-  
-  const style = {
-    padding: 0,
-    margin: 0,
-    display: 'block',
-    lineHeight: 25,
-    height: 25
+export default class Row extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      cells : []
+    }
+  };
+
+  componentWillMount(){
+    this.setState({
+      cells: this.props.cells,
+    });
   }
 
-  let cells = props.cells.map((cell, index) => {
-    return <Cell key={index}>{cell}</Cell>;
-  });
+  componentWillReceiveProps(nextProps) {
+    if (this.props !== nextProps)
+      this.setState({
+        cells: this.props.cells,
+      });
+  }
 
-  return (
-    <div style={style}>
-      {cells}
-    </div>
-  );
+  shouldComponentUpdate(nextProps, nextState){
+    return nextProps.cells !== this.state.cells;
+  }
+  
+  render() {
+    return (
+      <tr>
+        {
+          this.state.cells.map((cell, index) => {
+            return <Cell key={index}>{cell}</Cell>;
+          })
+        }
+      </tr>
+    );
+
+  }
+
 }
-
-export default Row;
 
 Row.defaultProps = {
   children: '' 
