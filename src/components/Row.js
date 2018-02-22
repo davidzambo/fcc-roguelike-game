@@ -1,8 +1,8 @@
-import React, {Component} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import Cell from './Cell';
 
-export default class Row extends Component {
+export default class Row extends React.Component {
   constructor(props){
     super(props);
     this.state = {
@@ -10,28 +10,16 @@ export default class Row extends Component {
     }
   };
 
-  componentWillMount(){
-    this.setState({
-      cells: this.props.cells,
-    });
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (this.props !== nextProps)
-      this.setState({
-        cells: this.props.cells,
-      });
-  }
-
-  shouldComponentUpdate(nextProps, nextState){
-    return nextProps.cells !== this.state.cells;
-  }
+  // shouldComponentUpdate(nextProps, nextState){
+  //   console.log('need row update');
+  //   return this.props.cells !== nextProps.cells;
+  // }
   
   render() {
     return (
       <tr>
         {
-          this.state.cells.map((cell, index) => {
+          this.props.cells.map((cell, index) => {
             return <Cell key={index}>{cell}</Cell>;
           })
         }
