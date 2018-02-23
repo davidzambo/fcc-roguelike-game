@@ -1,19 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Segment } from 'semantic-ui-react';
 
 const HeroCard = (props) => {
-  let skills = props.info.skills.map((skill) => {
-    return <i className={'icon-'+skill.icon}>{skill.name}</i>
+  let skills = props.info.skills.map((skill, i) => {
+    return <li key={i}><i className={skill.icon + ' list-icon'}></i>{skill.name}</li>
   });
   return (
-    <div>
-      <p>Dave</p>
-      <p>Position x: {props.info.position.x}</p>
-      <p>Position y: {props.info.position.y}</p>
+    <Segment>
       <p>DevXP: {props.info.devXP}</p>
-      <p>Skills: {skills}</p>
+      <p>Menthal health: {props.info.menthalHealth}</p>
+      <div className="skill-container"><span>Skills: </span>
+        <ul className="skill-list">
+        {skills}
+        </ul>
+      </div>
 
-    </div>
+    </Segment>
   );
 }
 
