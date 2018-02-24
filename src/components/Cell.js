@@ -14,7 +14,7 @@ export default class Cell extends React.PureComponent{
   componentWillMount(){
     const room = {
       backgroundColor: 'rgba(226, 147, 68, ' + _.random(0.3, 0.7) + ')',
-      border: '1px solid rgba(226, 147, 68, 0.7)',
+      border: '1px solid rgb(226, 147, 68)',
     };
     const wall = {
       backgroundColor: '#1B1C1D',

@@ -8,6 +8,7 @@ import Skill from './actors/Skill';
 import Bug from './actors/Bug';
 import HeroCard from './HeroCard';
 import Logger from './Logger';
+import LevelUp from './LevelUp.js';
 import { Header, Container, Divider, Icon, Modal, Grid} from 'semantic-ui-react';
 
 const actors = [
@@ -50,8 +51,11 @@ export default class App  extends React.Component{
     this.toggleGameDescription = this.toggleGameDescription.bind(this);
     this.handleHero = this.handleHero.bind(this);
     this.handleLog = this.handleLog.bind(this);
+    this.handleLevelUp = this.handleLevelUp.bind(this);
     this.state = {
       showGameDescription: false,
+      blueprint : {},
+      actors: [],
       hero: {
         level: 1,
         devXP: 1,
@@ -63,6 +67,7 @@ export default class App  extends React.Component{
         skills: [],
       },
       logs : [],
+      levelup : true,
     };
   }
 
@@ -74,7 +79,8 @@ export default class App  extends React.Component{
     let blueprint = MapGenerator.createBlueprint();
 
     this.setState({
-      blueprint: blueprint
+      blueprint: blueprint,
+      actors: actors[this.state.hero.level - 1],
     });
   }
 
@@ -116,13 +122,23 @@ export default class App  extends React.Component{
     if (obj.level !== undefined && obj.level === true){
       // close healing timeout
       clearInterval(this.relax);
-      // set hero's healt to max
+      // set hero's health to max
       hero.menthalHealth = 100;
-      this.initializeBlueprint();
+      hero.level++;
+
+      alert('level up');
+
+      this.setState({
+        blueprint: MapGenerator.createBlueprint(),
+        actors: actors[hero.level -1],
+        hero: hero
+      });
+    } else {
+
+      this.setState({
+        hero: hero
+      });
     }
-    this.setState({
-      hero: hero
-    });
   }
 
   handleLog(log){
@@ -131,22 +147,29 @@ export default class App  extends React.Component{
       logs: logs,
     });
   }
+
+  handleLevelUp(){
+    this.setState({
+      levelup: false,
+    })
+  }
   
 
-  render(){ 
+  render(){
     return (
       <Layout>
         <GameDescription showGameDescription={this.state.showGameDescription} onClick={this.toggleGameDescription}/>
         
-        <Grid columns={2}>
-          <Grid.Column width={16} mobile={16} tablet={16} computer={10} className="labirinth">
+        <Grid columns={2} divided padded>
+          <Grid.Column width={16} mobile={16} tablet={16} computer={12}>
             <Map  blueprint={this.state.blueprint} 
-                  actors={actors[this.state.hero.level - 1]} 
+                  actors={this.state.actors} 
                   updateHero={this.handleHero}
                   hero={this.state.hero}
                   setLog={this.handleLog}/>
+            <LevelUp open={this.state.levelup} close={this.handleLevelUp} />
           </Grid.Column>
-          <Grid.Column width={5}>
+          <Grid.Column width={4}>
             <HeroCard info={this.state.hero}/>
             <Logger logs={this.state.logs} />
           </Grid.Column>

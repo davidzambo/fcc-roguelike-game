@@ -1,21 +1,30 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Segment } from 'semantic-ui-react';
+import { Segment, Progress } from 'semantic-ui-react';
 
 const HeroCard = (props) => {
   let skills = props.info.skills.map((skill, i) => {
     return <li key={i}><i className={skill.icon + ' list-icon'}></i>{skill.name}</li>
   });
+  let menthalStateColor;
+  if (props.info.menthalHealth > 70)
+    menthalStateColor = 'green'; 
+  else if (props.info.menthalHealt > 45)
+    menthalStateColor = 'teal';
+  else if (props.info.menthalHealth > 15)
+    menthalStateColor = 'orange'; 
+  else
+    menthalStateColor = 'red';
+
+  let devXPPercent = Math.ceil(props.info.devXP / 294 * 100)
   return (
     <Segment>
-      <p>DevXP: {props.info.devXP}</p>
-      <p>Menthal health: {props.info.menthalHealth}</p>
-      <div className="skill-container"><span>Skills: </span>
-        <ul className="skill-list">
+      <Progress percent={props.info.menthalHealth} progress color={menthalStateColor}>Menthal Health</Progress>
+      <Progress percent={devXPPercent} color='blue'>Developer Experience: {props.info.devXP}</Progress>
+      <p style={{marginBottom: 0}}><strong>Skills: </strong></p>
+      <ul className="skill-list">
         {skills}
-        </ul>
-      </div>
-
+      </ul>
     </Segment>
   );
 }

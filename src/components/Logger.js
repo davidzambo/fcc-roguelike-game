@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Message } from 'semantic-ui-react';
+import { Segment } from 'semantic-ui-react';
 
 const MAXLOGNUMBER = 5;
 
 const Logger = (props) => {
   const logLength = (props.length > MAXLOGNUMBER) ? MAXLOGNUMBER : props.length;
   const logs = props.logs.map((log, i) => {
-    return <Message key={i} color={log.color}>{log.message}</Message>
+    return <Segment key={i} inverted raised color={log.color}>{log.message}</Segment>
   }).reverse().slice(0,MAXLOGNUMBER);
  
   return (

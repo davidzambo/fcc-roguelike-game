@@ -13,6 +13,7 @@ import { Grid } from 'semantic-ui-react';
 export default class Map extends Component {
   constructor(props) {
     super(props);
+    this.initializeMap = this.initializeMap.bind(this);
     this.handleKeyDown = this.handleKeyDown.bind(this);
     this.handleHeroMove = this.handleHeroMove.bind(this);
     this.step = this.step.bind(this);
@@ -23,41 +24,51 @@ export default class Map extends Component {
   }
 
   componentWillMount(){
+    this.initializeMap();
+  }
+
+  initializeMap(){
     let map = [...this.props.blueprint.map],
-        rooms = [...this.props.blueprint.rooms],
-        actors = [...this.props.actors],
-        roomIndex,
-        roomCoords,
-        newRooms;
+      rooms = [...this.props.blueprint.rooms],
+      actors = [...this.props.actors],
+      roomIndex,
+      roomCoords,
+      newRooms;
 
     actors.map((actor) => {
       // find a random free place
-      roomIndex = _.random(0,rooms.length - 1);
+      roomIndex = _.random(0, rooms.length - 1);
       // get the coords of the selected free place
       roomCoords = rooms[roomIndex];
       // put the current actor to the selected free place
       map[roomCoords[0]][roomCoords[1]] = actor;
       // send back the Hero's position to App.js
-      if ( actor.type.displayName === 'Hero'){
+      if (actor.type.displayName === 'Hero') {
         // console.log(`Hero position sent: ${roomCoords}`);
         this.props.updateHero({ position: roomCoords });
       }
       // remove the chosen free room from the free rooms array
       if (roomIndex === rooms.length - 1)
-        newRooms = rooms.slice(0,-1);
+        newRooms = rooms.slice(0, -1);
       else if (roomIndex === 0)
-        newRooms = rooms.slice(1,rooms.length - 1);
+        newRooms = rooms.slice(1, rooms.length - 1);
       else
-        newRooms = rooms.slice(0,roomIndex).concat(rooms.slice(roomIndex+1,rooms.length-1))
+        newRooms = rooms.slice(0, roomIndex).concat(rooms.slice(roomIndex + 1, rooms.length - 1))
       rooms = newRooms;
     });
 
     document.addEventListener('keydown', this.handleKeyDown);
 
     this.setState({
+      blueprint: this.props.blueprint,
       map: map,
       actors: actors.length
     });
+  }
+
+  componentWillReceiveProps(nextProps){
+    if (nextProps.blueprint !== this.state.blueprint)
+      this.initializeMap();
   }
 
   handleKeyDown(e) {
@@ -84,9 +95,11 @@ export default class Map extends Component {
         heroState = {},
         newActors = this.state.actors;
     
-    if ( nextStepContent === 0 ){ // we will step to an empty field
+    if ( typeof nextStepContent === 'number' ){ 
 
-      newMap = this.handleHeroMove(direction);
+      if (nextStepContent === 0) // we will step to an empty field
+        
+        newMap = this.handleHeroMove(direction);
 
     } else if (nextStepContent.type.displayName === 'Skill') { // we will pick up new skill
 
@@ -97,9 +110,9 @@ export default class Map extends Component {
       });
       
       newActors--;
-      if (newActors === 1) 
+      if (newActors === 1)
 
-        heroState.level = true
+        this.handleHeroMove([0,0], { level: true });
        
         
     } else { // we will debug a bug
@@ -131,13 +144,13 @@ export default class Map extends Component {
 
             this.props.setLog({
               color: 'green',
-              message: `Congratulation! You debugged your code!`
+              message: `That's it! You've fixed ${debugPower} errors!`
             });
 
             newMap = this.handleHeroMove(direction);
             newActors--;
             if (newActors === 1)
-              heroState.level = true
+              this.handleHeroMove([0, 0], { level: true });
               // this.props.setLog({
               //   color: 'green',
               //   message: `You are AMAZING! You've leart a lot of new stuffs and throw out all the bugs from your code! Let's find the freeCodeCamp's base now, to claim your certification!`
