@@ -9,6 +9,38 @@ import Row from './Row';
 import Cell from './Cell';
 import { Grid } from 'semantic-ui-react';
 
+const levelActors = [
+  [
+    <Hero />,
+    <Skill name="HTML5" icon="icon-html5" devXP={1} />,
+    <Skill name="CSS3" icon="icon-css3-alt" devXP={3} />,
+    <Skill name="BootStrap" icon="icon-bootstrap" devXP={5} />,
+    <Skill name="JavaScript" icon="icon-js" devXP={20} />,
+    <Skill name="jQuery" icon="icon-jquery" devXP={10} />,
+    <Bug errors={3} />,
+    <Bug errors={5} />,
+    <Bug errors={10} />,
+    <Bug errors={20} />,
+    <Bug errors={40} />,
+  ], [
+    <Hero />,
+    <Skill name="Sass" icon="icon-sass" devXP={25} />,
+    <Skill name="React" icon="icon-react" devXP={40} />,
+    <Skill name="D3" icon="icon-d3" devXP={30} />,
+    <Bug errors={65} />,
+    <Bug errors={105} />,
+    <Bug errors={135} />,
+  ], [
+    <Hero />,
+    <Skill name="NodeJS" icon="icon-nodejs" devXP={40} />,
+    <Skill name="Express" icon="icon-express" devXP={40} />,
+    <Skill name="Mongo" icon="icon-mongodb" devXP={40} />,
+    <Skill name="Git" icon="icon-git" devXP={40} />,
+    <Bug errors={175} />,
+    <Bug errors={215} />,
+    <Bug errors={255} />,
+    <Bug errors={999} boss/>,
+  ]];
 
 export default class Map extends Component {
   constructor(props) {
@@ -19,18 +51,28 @@ export default class Map extends Component {
     this.step = this.step.bind(this);
     this.state = {
       map: [],
-      actors: 0,
+      actorsNumber: 0,
+      actors: [],
+      blueprint: {},
     }
   }
 
   componentWillMount(){
-    this.initializeMap();
+    document.addEventListener('keydown', this.handleKeyDown);
+    let newMap = this.initializeMap();
+    
+    this.setState({
+      blueprint: newMap.blueprint,
+      map: newMap.map,
+      actorsNumber: newMap.actorsNumber,
+      actors: newMap.actors
+    });
   }
 
   initializeMap(){
     let map = [...this.props.blueprint.map],
       rooms = [...this.props.blueprint.rooms],
-      actors = [...this.props.actors],
+      actors = levelActors[this.props.hero.level - 1],
       roomIndex,
       roomCoords,
       newRooms;
@@ -57,18 +99,25 @@ export default class Map extends Component {
       rooms = newRooms;
     });
 
-    document.addEventListener('keydown', this.handleKeyDown);
-
-    this.setState({
+    return {
       blueprint: this.props.blueprint,
       map: map,
-      actors: actors.length
-    });
+      actorsNumber: actors.length,
+      actors: actors
+    };
   }
 
   componentWillReceiveProps(nextProps){
-    if (nextProps.blueprint !== this.state.blueprint)
-      this.initializeMap();
+    if (nextProps.blueprint !== this.state.blueprint){
+      let newMap = this.initializeMap();
+
+      this.setState({
+        blueprint: newMap.blueprint,
+        map: newMap.map,
+        actorsNumber: newMap.actorsNumber,
+        actors: newMap.actors
+      });
+    }
   }
 
   handleKeyDown(e) {
@@ -93,7 +142,7 @@ export default class Map extends Component {
         nextStepContent = this.state.map[newPos[0]][newPos[1]],
         newMap = [...this.state.map],
         heroState = {},
-        newActors = this.state.actors;
+        newActors = this.state.actorsNumber;
     
     if ( typeof nextStepContent === 'number' ){ 
 
@@ -110,11 +159,9 @@ export default class Map extends Component {
       });
       
       newActors--;
-      if (newActors === 1)
-
-        this.handleHeroMove([0,0], { level: true });
-       
-        
+      if (newActors === 1){
+        return this.handleHeroMove([0,0], { level: true });
+      }
     } else { // we will debug a bug
       /** 'debug'
         * We should select a random hit power
@@ -135,7 +182,7 @@ export default class Map extends Component {
           
         } else { // you can fight
           // find a random hitpower
-          let debugPower = Math.ceil(_.random(1, this.props.hero.devXP) * this.props.hero.menthalHealth / 100);
+          let debugPower = Math.ceil(_.random(1, this.props.hero.devXP / 2) * this.props.hero.menthalHealth / 100 + this.props.hero.devXP / 2);
           // send back the log message to app
 
           // check if its higher than the bug errors
@@ -150,7 +197,7 @@ export default class Map extends Component {
             newMap = this.handleHeroMove(direction);
             newActors--;
             if (newActors === 1)
-              this.handleHeroMove([0, 0], { level: true });
+              return this.handleHeroMove([0, 0], { level: true });
               // this.props.setLog({
               //   color: 'green',
               //   message: `You are AMAZING! You've leart a lot of new stuffs and throw out all the bugs from your code! Let's find the freeCodeCamp's base now, to claim your certification!`
@@ -166,7 +213,10 @@ export default class Map extends Component {
               color: 'blue',
               message: `Nice! You've fixed ${debugPower} errors, ! Only ${newErrors} errors left to eliminate this naughty bug!`
             });
-            newMap[newPos[0]][newPos[1]] = <Bug errors={newErrors}/>;
+            if (nextStepContent.props.hasOwnProperty('boss'))
+              newMap[newPos[0]][newPos[1]] = <Bug errors={newErrors} boss/>;
+            else 
+              newMap[newPos[0]][newPos[1]] = <Bug errors={newErrors}/>;
             // decrease the heros menthal status || start the timer to regenerate
             this.handleHeroMove([0,0], {menthalHealth: 15}); // hero not moving anywhere
           } // end of partial debugging
@@ -178,7 +228,7 @@ export default class Map extends Component {
     // refresh the map
     this.setState({
       map: newMap,
-      actors: newActors
+      actorsNumber: newActors
     });
   } // end step
 
@@ -200,7 +250,7 @@ export default class Map extends Component {
 
   render() {
     const rows = this.state.map.map((cells, index) => {
-        return <Row key={index} cells={cells}/>
+        return <Row key={index} cells={cells} level={this.props.hero.level}/>
     });
     return (
       <table>

@@ -22,8 +22,16 @@ export default class Cell extends React.PureComponent{
     };
     
     this.setState({
+      room: room,
+      wall: wall,
       style: (this.props.children === 1) ? wall : room,
-    });        
+    });
+  }
+
+  componentWillReceiveProps(nextProps){
+    this.setState({
+      style: (nextProps.children === 1) ? this.state.wall : this.state.room,
+    });
   }
 
   render(){

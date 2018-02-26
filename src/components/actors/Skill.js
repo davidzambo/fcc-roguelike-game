@@ -17,6 +17,8 @@ export default class Skill extends React.Component{
       <Popup
         trigger={<i className={this.props.icon}></i>}
         content={popupContent}
+        position="top center"
+        style={{ opacity: 0.8 }}
       />
     );
   };

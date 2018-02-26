@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Segment, Progress } from 'semantic-ui-react';
+import { Segment, Progress, Divider } from 'semantic-ui-react';
 
 const HeroCard = (props) => {
   let skills = props.info.skills.map((skill, i) => {
@@ -20,7 +20,9 @@ const HeroCard = (props) => {
   return (
     <Segment>
       <Progress percent={props.info.menthalHealth} progress color={menthalStateColor}>Menthal Health</Progress>
+      <Divider horizontal />
       <Progress percent={devXPPercent} color='blue'>Developer Experience: {props.info.devXP}</Progress>
+      <Divider horizontal />
       <p style={{marginBottom: 0}}><strong>Skills: </strong></p>
       <ul className="skill-list">
         {skills}

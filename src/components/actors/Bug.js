@@ -5,16 +5,23 @@ import { Icon, Popup } from 'semantic-ui-react'
 export default class Bug  extends React.PureComponent{
   constructor(props){
     super(props);
+    this.state = {
+      isOpen: false,
+    }
   }
 
   render(){
-    const popupContent = <p>Remaining errors: {this.props.errors + ' ' + ((this.props.errors === 1) ? ' error' : ' errors'  )} <br/>Headache: max. 15 menthal damage/round</p>;
+    const popupContent = <p>Remaining errors: {this.props.errors + ' ' + ((this.props.errors === 1) ? ' error' : ' errors'  )}</p>;
+    const boss = (this.props.hasOwnProperty('boss')) ? 'boss' : 'bug';
     return (
       <Popup
-        trigger={<Icon name="bug" color="brown"/>}
+        trigger={<Icon name="bug" color="brown" className={boss}/>}
         content={popupContent}
         wide
+        hoverable
+        open={this.props.isOpen}
         position="top center"
+        style={{opacity: 0.8}}
       />
     );
   }

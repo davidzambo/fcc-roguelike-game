@@ -9,40 +9,9 @@ import Bug from './actors/Bug';
 import HeroCard from './HeroCard';
 import Logger from './Logger';
 import LevelUp from './LevelUp.js';
-import { Header, Container, Divider, Icon, Modal, Grid} from 'semantic-ui-react';
-
-const actors = [
-  [
-    <Hero />,
-    <Skill name="HTML5" icon="icon-html5" devXP={1} />,
-    <Skill name="CSS3" icon="icon-css3-alt" devXP={3} />,
-    <Skill name="BootStrap" icon="icon-bootstrap" devXP={5} />,
-    <Skill name="JavaScript" icon="icon-js" devXP={20} />,
-    <Skill name="jQuery" icon="icon-jquery" devXP={10} />,
-    <Bug errors={1} />,
-    <Bug errors={3} />,
-    <Bug errors={5} />,
-    <Bug errors={10} />,
-    <Bug errors={20} />,
-  ], [
-    <Hero />,
-    <Skill name="Sass" icon="icon-sass" devXP={25} />,
-    <Skill name="React" icon="icon-react" devXP={40} />,
-    <Skill name="D3" icon="icon-d3" devXP={30} />,
-    <Bug errors={65} />,
-    <Bug errors={105} />,
-    <Bug errors={135} />,
-  ], [
-    <Hero />,
-    <Skill name="NodeJS" icon="icon-nodejs" devXP={40} />,
-    <Skill name="Express" icon="icon-express" devXP={40} />,
-    <Skill name="Mongo" icon="icon-mongo" devXP={40} />,
-    <Skill name="Git" icon="icon-git" devXP={40} />,
-    <Bug errors={175} />,
-    <Bug errors={215} />,
-    <Bug errors={255} />,
-    <Bug errors={999} />,
-  ]];
+import Darkness from './Darkness';
+import GameControls from './GameControls';
+import { Header, Container, Divider, Icon, Modal, Grid, Image} from 'semantic-ui-react';
 
 export default class App  extends React.Component{
   constructor(props) {
@@ -52,10 +21,11 @@ export default class App  extends React.Component{
     this.handleHero = this.handleHero.bind(this);
     this.handleLog = this.handleLog.bind(this);
     this.handleLevelUp = this.handleLevelUp.bind(this);
+    this.handleLights = this.handleLights.bind(this);
+    this.handleRestart = this.handleRestart.bind(this)
     this.state = {
-      showGameDescription: false,
+      showGameDescription: true,
       blueprint : {},
-      actors: [],
       hero: {
         level: 1,
         devXP: 1,
@@ -67,7 +37,9 @@ export default class App  extends React.Component{
         skills: [],
       },
       logs : [],
-      levelup : true,
+      levelup : false,
+      isFinished: false,
+      isLightUp : false
     };
   }
 
@@ -80,7 +52,6 @@ export default class App  extends React.Component{
 
     this.setState({
       blueprint: blueprint,
-      actors: actors[this.state.hero.level - 1],
     });
   }
 
@@ -95,6 +66,7 @@ export default class App  extends React.Component{
   handleHero(obj){
     // console.log(obj);
     let hero = Object.assign({}, this.state.hero);
+    let isFinished = this.state.isFinished;
 
     hero.position.x = obj.position[1];
     hero.position.y = obj.position[0];
@@ -107,34 +79,41 @@ export default class App  extends React.Component{
       hero.menthalHealth -= obj.menthalHealth
     }
     // set up the healing
-    if (hero.menthalHealth < 100 && this.relax === undefined)
+    if (this.relax === undefined && hero.menthalHealth < 100)
       this.relax = setInterval(() =>{
         let hero = Object.assign({}, this.state.hero);
         hero.menthalHealth++;
         if (hero.menthalHealth === 100){
+          this.relax === undefined;
           clearInterval(this.relax);
+          console.log(this.relax)
         }
         this.setState({
           hero: hero,
         })
-      }, 1000);
+      }, 500);
     // level up!
     if (obj.level !== undefined && obj.level === true){
       // close healing timeout
       clearInterval(this.relax);
+      this.relax = undefined;
       // set hero's health to max
       hero.menthalHealth = 100;
+
+      if (hero.level === 3){ // we reached the max level
+        console.log('finished');
+        hero.level = 0;
+        isFinished = true;
+      } 
       hero.level++;
-
-      alert('level up');
-
       this.setState({
         blueprint: MapGenerator.createBlueprint(),
-        actors: actors[hero.level -1],
-        hero: hero
+        hero: hero,
+        isFinished: isFinished,
+        levelup: true,
       });
     } else {
-
+      
       this.setState({
         hero: hero
       });
@@ -153,25 +132,84 @@ export default class App  extends React.Component{
       levelup: false,
     })
   }
+
+  handleLights(){
+    this.setState((prevState, props) => {return {isLightUp: !prevState.isLightUp} });
+  }
+
+  handleRestart(){
+    this.setState({
+      showGameDescription: false,
+      blueprint: {},
+      hero: {
+        level: 1,
+        devXP: 1,
+        menthalHealth: 100,
+        position: {
+          x: 0,
+          y: 0
+        },
+        skills: [],
+      },
+      logs: [],
+      levelup: false,
+      isFinished: false,
+      isLightUp: false,
+    });
+    this.initializeBlueprint();
+  }
   
 
   render(){
+    if (this.state.hero.menthalHealth === 100){
+      clearInterval(this.relax)
+      this.relax = undefined;
+    }
+
     return (
       <Layout>
         <GameDescription showGameDescription={this.state.showGameDescription} onClick={this.toggleGameDescription}/>
         
         <Grid columns={2} divided padded>
-          <Grid.Column width={16} mobile={16} tablet={16} computer={12}>
-            <Map  blueprint={this.state.blueprint} 
-                  actors={this.state.actors} 
-                  updateHero={this.handleHero}
-                  hero={this.state.hero}
-                  setLog={this.handleLog}/>
-            <LevelUp open={this.state.levelup} close={this.handleLevelUp} />
+          <Grid.Column tablet={16} computer={12} only='tablet'>
+            <div className="map-container">
+              <Map blueprint={this.state.blueprint}
+                isLightUp={this.state.isLightUp}
+                updateHero={this.handleHero}
+                hero={this.state.hero}
+                setLog={this.handleLog} />
+              <Darkness light={this.state.isLightUp} position={this.state.hero.position} />
+            </div>
+            <LevelUp  open={this.state.levelup} 
+                      close={this.handleLevelUp} 
+                      finish={this.state.isFinished}
+                      restart={this.handleRestart}/>
           </Grid.Column>
-          <Grid.Column width={4}>
-            <HeroCard info={this.state.hero}/>
-            <Logger logs={this.state.logs} />
+          <Grid.Column tablet={16} computer={4} only='tablet'>
+            <Grid columns={3} stackable stretched verticalAlign="top">
+              <Grid.Column tablet={5} computer={16}>
+                <GameControls 
+                  toggleGameDescription={this.toggleGameDescription}
+                  toggleLights={this.handleLights}
+                  isLightUp={this.state.isLightUp}
+                  restart={this.handleRestart}/>
+              </Grid.Column>
+              <Grid.Column tablet={5} computer={16}>
+                <HeroCard info={this.state.hero}/>
+              </Grid.Column>
+              <Grid.Column tablet={6} computer={16}>
+                <Logger logs={this.state.logs} />
+              </Grid.Column>
+            </Grid>
+          </Grid.Column>
+        </Grid>
+
+        <Grid columns={1} padded stackable stretched verticalAlign="middle" relaxed textAlign="center" className="only-mobile">
+          <Grid.Column stretched width={16}>
+            <Image src="/public/images/sorry.jpg" fluid centered />
+            <Header as='h1' icon color="grey" inverted>
+              The content is available only on tablet+ devices!
+            </Header>
           </Grid.Column>
         </Grid>
       </Layout>

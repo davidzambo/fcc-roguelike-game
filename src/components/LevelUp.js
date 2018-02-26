@@ -1,5 +1,5 @@
-import React, { Component } from 'react'
-import { Button, Modal } from 'semantic-ui-react'
+import React, { Component } from 'react';
+import { Button, Modal, Header, Grid, Image } from 'semantic-ui-react';
 
 export default class LevelUp extends Component {
   constructor(props){
@@ -17,24 +17,49 @@ export default class LevelUp extends Component {
     this.setState({ open: nextProps.open });
   }
 
-  show = size => () => this.setState({ size, open: true })
-  close = () => this.setState({ open: false })
-
   render() {
+    let question,
+        buttonColor,
+        buttonText,
+        buttonAction,
+        headerText;
 
+    if (this.props.finish){
+      headerText = 'the journey';
+      question = 'Do you want to restart the game?';
+      buttonColor = 'red';
+      buttonText = "Sure! Let's play again!";
+      buttonAction = this.props.restart;
+    } else {
+      headerText = 'this level';
+      question = 'Are you ready for the next challange?';
+      buttonColor = 'green';
+      buttonText = "I'm In! Let's do it!";
+      buttonAction = this.props.close;      
+    }
     return (
       <div>
 
-        <Modal size='tiny' open={this.state.open} onClose={this.props.close}>
+        <Modal size='small' open={this.state.open} onClose={buttonAction} dimmer="blurring">
           <Modal.Header>
-            <h1>Congratulation! You've completed this level!</h1>
+            <Header as="h1" textAlign="center">Congratulation! You've completed {headerText}!</Header>
           </Modal.Header>
-          <Modal.Content>
-            <p>You've learnt a lot of <strong>new stuffs</strong> and successfully eliminated <strong>all the bugs</strong>! <br/><small>... you wrote... :)</small></p>
-            <p>Are you ready for the next challange?</p>
+          <Modal.Content image>
+            <Grid>
+              <Grid.Column width={6}>
+                <Image src="/public/images/cup.png" />
+              </Grid.Column>
+              <Grid.Column width={10}>
+                <Modal.Description>
+                  <p>You've learnt a lot of <strong>new stuffs</strong> and successfully eliminated <strong>all the bugs</strong> from your code!</p>
+                  <p><em><small>(By the way, who was the bastard, who put them into it? :) )</small></em></p>
+                  <p>{question}</p>
+                </Modal.Description>
+              </Grid.Column>
+            </Grid>
           </Modal.Content>
-          <Modal.Actions textAlign="center">
-            <Button positive icon='checkmark' labelPosition='left' content="I'm in, let's do it" />
+          <Modal.Actions>
+            <Button color={buttonColor} icon='checkmark' labelPosition='left' content={buttonText} onClick={buttonAction}/>
           </Modal.Actions>
         </Modal>
       </div>

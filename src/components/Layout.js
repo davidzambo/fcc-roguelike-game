@@ -1,14 +1,29 @@
 import React, { Component } from 'react';
-import { Header, Container, Divider, Icon } from 'semantic-ui-react';
+import { Header, Container, Grid, Divider, Icon } from 'semantic-ui-react';
+import Footer from './Footer';
 
 export default class Layout extends Component{
   render(){
     return (
       <Container fluid>
-        <Header as="h1" textAlign="center">The Amazing Journey of David</Header>
-        <Header as="h2" textAlign="center">(to become an awesome full stack web developer)</Header>
-        <Header as="h5" textAlign="center">a Roguelike Dungeon Crawler Game</Header>
-        {this.props.children}
+        <Grid>
+          <Grid.Row columns="1">
+            <Grid.Column width={16}>
+              <Divider horizontal/>
+              <Header as="h1" textAlign="center" inverted>
+                <Header.Content>
+                  The Mighty Labirinth of Web Development
+                </Header.Content>
+              </Header>
+            </Grid.Column>
+          </Grid.Row>
+          <Grid.Row>
+            {this.props.children}
+          </Grid.Row>
+        </Grid>
+        <Grid.Row>
+          <Footer />
+        </Grid.Row>
       </Container>
     );
 

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Segment } from 'semantic-ui-react';
 
-const MAXLOGNUMBER = 5;
+const MAXLOGNUMBER = 3;
 
 const Logger = (props) => {
   const logLength = (props.length > MAXLOGNUMBER) ? MAXLOGNUMBER : props.length;
