@@ -12,6 +12,8 @@ import LevelUp from './LevelUp.js';
 import Darkness from './Darkness';
 import GameControls from './GameControls';
 import { Header, Container, Divider, Icon, Modal, Grid, Image} from 'semantic-ui-react';
+import '../styles/styles.css';
+import '../styles/technology-icons.css';
 
 export default class App  extends React.Component{
   constructor(props) {
@@ -84,7 +86,7 @@ export default class App  extends React.Component{
         let hero = Object.assign({}, this.state.hero);
         hero.menthalHealth++;
         if (hero.menthalHealth === 100){
-          this.relax === undefined;
+          this.relax = undefined;
           clearInterval(this.relax);
           console.log(this.relax)
         }
@@ -170,7 +172,7 @@ export default class App  extends React.Component{
       <Layout>
         <GameDescription showGameDescription={this.state.showGameDescription} onClick={this.toggleGameDescription}/>
         
-        <Grid columns={2} divided padded>
+        <Grid columns={2} padded relaxed className="no-gutters">
           <Grid.Column tablet={16} computer={12} only='tablet'>
             <div className="map-container">
               <Map blueprint={this.state.blueprint}
@@ -202,16 +204,14 @@ export default class App  extends React.Component{
               </Grid.Column>
             </Grid>
           </Grid.Column>
-        </Grid>
-
-        <Grid columns={1} padded stackable stretched verticalAlign="middle" relaxed textAlign="center" className="only-mobile">
-          <Grid.Column stretched width={16}>
-            <Image src="/public/images/sorry.jpg" fluid centered />
-            <Header as='h1' icon color="grey" inverted>
+          <Grid.Column width={16} className="only-mobile">
+            <Image src="/public/images/sorry.jpg" centered />
+            <Header as='h1' icon color="grey" inverted className="text-shadow">
               The content is available only on tablet+ devices!
             </Header>
           </Grid.Column>
         </Grid>
+
       </Layout>
     );
   }

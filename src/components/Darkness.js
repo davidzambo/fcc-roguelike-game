@@ -11,7 +11,7 @@ const Darkness = (props) => {
     right: 0,
     bottom: 0,
     zIndex: 10,
-    pointerEvents: 'none'
+    pointerEvents: 'none',
   }
   return (
     <div style={darknessStyle}>

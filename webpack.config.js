@@ -2,7 +2,7 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  entry: ['react-hot-loader/patch', './src/index.js'],
+  entry: ['react-hot-loader/patch', __dirname + '/src/index.js'],
   output: {
     filename: 'bundle.[hash].js',
     publicPath: '/'
@@ -30,6 +30,10 @@ module.exports = {
             }
           }
         ]
+      },
+      {
+        test: /\.(eot|svg|ttf|woff|woff2)$/,
+        loader: 'url-loader?limit=100000'
       }
     ]
   },
