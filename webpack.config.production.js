@@ -1,13 +1,18 @@
+const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
-  entry: ['react-hot-loader/patch', __dirname + '/src/index.js'],
+  entry: './src/index.js',
   output: {
-    filename: 'bundle.[hash].js',
-    publicPath: '/'
+    filename: 'js/[name].[hash].js',
+    path: path.resolve(__dirname, 'dist'),
+    publicPath: './'
   },
-  devtool: 'inline-source-map',
+  devtool: 'source-map',
   module: {
     rules: [
       {
@@ -24,33 +29,32 @@ module.exports = {
           {
             loader: 'css-loader',
             options: {
-              modules: true,
               camelCase: true,
-              sourceMap: true
+              sourceMap: true,
+              url: false
             }
           }
         ]
       },
       {
         test: /\.(eot|svg|ttf|woff|woff2)$/,
-        loader: 'url-loader?limit=100000'
+        use: ['file-loader']
+      },
+      {
+      test: /\.(jpg|png|svg)$/,
+        loader: 'file-loader',
       }
     ]
   },
   plugins: [
     new webpack.NamedModulesPlugin(),
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoEmitOnErrorsPlugin(),
+    new CleanWebpackPlugin(['dist']),
     new HtmlWebpackPlugin({
       template: 'public/index.html',
       favicon: 'public/favicon.ico'
-    })
+    }),
   ],
-  devServer: {
-    host: 'localhost',
-    port: 3000,
-    historyApiFallback: true,
-    open: true,
-    hot: true
+  resolve: {
+    extensions: ['.js', '.jsx', '.css']
   }
 };

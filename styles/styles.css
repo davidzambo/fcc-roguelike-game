@@ -23,7 +23,7 @@
  }
 
  #root {
-     background: linear-gradient(0deg, #1B1C1D 2%, orange 25%, cyan);
+     background: linear-gradient(0deg, orange, orange 5%, cyan);
      min-height: 100%;
      margin: 0!important;
      display: flex;
@@ -274,13 +274,12 @@
      padding-bottom: 0!important;
  }
  .footer{
-   width: 150px;
-   padding-top: 50px;
-   padding-bottom: 10px;
+   padding: 50px 100px 25px;
+   width: 200px;
    background-color: #1B1C1D;
    position: absolute;
-   top: -30px;
-   left: -60px;
+   top: -20px;
+   left: -70px;
    transform: rotate(-45deg);
    margin:auto;
   }

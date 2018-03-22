@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Button, Modal, Header, Grid, Image } from 'semantic-ui-react';
+import Cup from '../assets/images/cup.png'
 
 export default class LevelUp extends Component {
   constructor(props){
@@ -47,7 +48,7 @@ export default class LevelUp extends Component {
           <Modal.Content image>
             <Grid>
               <Grid.Column width={6}>
-                <Image src="/public/images/cup.png" />
+                <Image src={Cup} />
               </Grid.Column>
               <Grid.Column width={10}>
                 <Modal.Description>

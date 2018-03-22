@@ -12,8 +12,8 @@ import LevelUp from './LevelUp.js';
 import Darkness from './Darkness';
 import GameControls from './GameControls';
 import { Header, Container, Divider, Icon, Modal, Grid, Image} from 'semantic-ui-react';
-import '../styles/styles.css';
-import '../styles/technology-icons.css';
+import Sorry from '../assets/images/sorry.jpg';
+import '../assets/styles/styles.css';
 
 export default class App  extends React.Component{
   constructor(props) {
@@ -163,11 +163,6 @@ export default class App  extends React.Component{
   
 
   render(){
-    if (this.state.hero.menthalHealth === 100){
-      clearInterval(this.relax)
-      this.relax = undefined;
-    }
-
     return (
       <Layout>
         <GameDescription showGameDescription={this.state.showGameDescription} onClick={this.toggleGameDescription}/>
@@ -205,7 +200,7 @@ export default class App  extends React.Component{
             </Grid>
           </Grid.Column>
           <Grid.Column width={16} className="only-mobile">
-            <Image src="/public/images/sorry.jpg" centered />
+            <Image src={Sorry} centered />
             <Header as='h1' icon color="grey" inverted className="text-shadow">
               The content is available only on tablet+ devices!
             </Header>

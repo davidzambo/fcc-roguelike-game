@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { Header, Container, Divider, Icon, Modal, Segment, Grid, Button, Image } from 'semantic-ui-react';
 import Skill from './actors/Skill';
 import Bug from './actors/Bug';
+import HeroPic from '../assets/images/hero.png';
+import ControlPanel from '../assets/images/controlpanel.png';
 
 export default class GameDescription extends React.Component{
   render(){
@@ -32,18 +34,18 @@ export default class GameDescription extends React.Component{
                   </blockquote>
                 </Grid.Column>
                 <Grid.Column mobile={16} tablet={6} computer={4} largeScreen={4} widescreen={4}>
-                  <Image src='/public/images/hero.png' alt="player in labyrinth" centered />
+                  <Image src={HeroPic} alt="player in labyrinth" centered />
                 </Grid.Column>
                 <Grid.Column mobile={16} tablet={6} computer={6} largeScreen={6} widescreen={6}>
-                  <Image src='/public/images/controlpanel.png' alt='game control panel' centered />
+                  <Image src={ControlPanel} alt='game control panel' centered />
                 </Grid.Column>
                 <Grid.Column mobile={16} tablet={10} computer={10} largeScreen={10} widescreen={10}>
                   <p>So she took the advice of a pro, and dived herself deep into the endless ocean of the web development.</p>
                   <p>Help her to get new skills like <Skill name="HTML5" icon="icon-html5 list-icon" devXP={1} />, <Skill name="React" icon="icon-react list-icon" devXP={40} /> or <Skill name="Git" icon="icon-git list-icon" devXP={40} />to increase her <strong>Developer Experience</strong> and find all the bugs in the given level's code.</p>
                   <p>If you feel lost, just turn on the<Icon name="lightbulb" color='orange' size="large"/>!</p>
-                  <p>As in real life, debugging can cause temporary <strong><em>menthal damages</em></strong>! Take care of your menthal health! You can be the best developer of the world, if you @Overload your brain, 
+                  <p>As in real life, debugging can cause temporary <strong><em>menthal damages</em></strong>! Take care of Alice's menthal health! You can be the best developer of the world, if you @Overload your brain, 
                     you will be less efficient in killing those little bastards.</p>
-                  <p><strong>Warning!!!</strong> Every <Bug errors={42} /> produce different amount of errors. If you hover a bug, you can get more details.</p>
+                  <p>Every <Bug errors={42} /> produce different amount of errors. If you hover a bug, you can get more details.</p>
 
                   <p>
                     Are you ready for the journey?
